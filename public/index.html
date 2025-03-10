@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Biblioteca de Libros</title>
+</head>
+<body>
+    <h1>Gestión de Biblioteca</h1>
+    
+    <h2>Agregar Libro</h2>
+    <form id="addBookForm">
+        <input type="text" id="title" placeholder="Título" required>
+        <input type="text" id="author" placeholder="Autor" required>
+        <input type="number" id="year" placeholder="Año" required>
+        <button type="submit">Agregar Libro</button>
+    </form>
+
+    <h2>Lista de Libros</h2>
+    <div id="dataContainer"></div>
+
+    <h2>Actualizar Libro</h2>
+    <form id="updateBookForm">
+        <input type="number" id="bookId" placeholder="ID del Libro" required>
+        <input type="text" id="updateTitle" placeholder="Nuevo Título" required>
+        <input type="text" id="updateAuthor" placeholder="Nuevo Autor" required>
+        <input type="number" id="updateYear" placeholder="Nuevo Año" required>
+        <button type="submit">Actualizar Libro</button>
+    </form>
+
+    <h2>Generar PDF</h2>
+    <button id="generatePDF">Generar PDF de Libros</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

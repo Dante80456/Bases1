@@ -22,7 +22,7 @@ document.getElementById('addBookForm').addEventListener('submit', async (e) => {
         alert('✅ Libro agregado exitosamente');
         loadBooks();
     } else {
-        alert('❌ Error al agregar el libro');
+        alert('❌ Error al agregar el libro duplicado');
     }
     
 });

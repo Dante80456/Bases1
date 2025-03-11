@@ -10,9 +10,7 @@ const port = process.env.PORT || 3000;
 // Configuración de la conexión a CockroachDB
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL.includes("cockroachlabs") 
-    ? { sslmode: 'require' } 
-    : { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false }
 });
 
 // Verificar conexión a la base de datos
@@ -107,7 +105,7 @@ app.delete('/api/books/:id', async (req, res) => {
 
 // Iniciar el servidor
 app.listen(port, () => {
-  console.log("Servidor escuchando en http://localhost:${port}");
+  console.log('Servidor escuchando en http://localhost:${port}');
 });
 
 module.exports = app;

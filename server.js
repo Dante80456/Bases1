@@ -2,6 +2,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,7 +18,6 @@ const pool = new Pool({
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 app.get('/', (req, res) => {

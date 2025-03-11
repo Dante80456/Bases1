@@ -70,7 +70,18 @@ app.delete('/api/books/:id', async (req, res) => {
   }
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
+
+
+app.get('/', (req, res) => {
+    res.send('Servidor funcionando');
+});
+
+// ✅ Agregamos una ruta para /api
+app.get('/api', (req, res) => {
+    res.json({ message: 'API funcionando correctamente' });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`);
 });

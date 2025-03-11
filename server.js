@@ -17,6 +17,7 @@ const pool = new Pool({
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static('public'));
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 

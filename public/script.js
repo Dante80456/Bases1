@@ -12,12 +12,19 @@ document.getElementById('addBookForm').addEventListener('submit', async (e) => {
         body: JSON.stringify({ title, author, year }),
     });
 
+    if (response.status === 409) { // ⚠️ Código 409 indica libro duplicado
+        const data = await response.json();
+        alert(`⚠️ ${data.message}`); // Muestra la alerta con el mensaje del backend
+        return;
+    }
+    
     if (response.ok) {
-        alert('Libro agregado exitosamente');
+        alert('✅ Libro agregado exitosamente');
         loadBooks();
     } else {
-        alert('Error al agregar el libro');
+        alert('❌ Error al agregar el libro');
     }
+    
 });
 
 document.getElementById('updateBookForm').addEventListener('submit', async (e) => {

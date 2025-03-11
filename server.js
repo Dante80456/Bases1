@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 // Configura la conexión a CockroachDB
 const pool = new Pool({
-  connectionString: "postgresql://dante:nVTBeto1CYeMXpl3nQnmow@vortex-seapen-4805.jxf.gcp-us-east1.cockroachlabs.cloud:26257/Bases1?sslmode=require",
+  connectionString: process.env.DATABASE_URL, // Usa una variable de entorno en lugar de una conexión directa
 });
 
 // Middleware
@@ -20,7 +20,10 @@ app.use(express.static('public'));
 app.post('/api/books', async (req, res) => {
   const { title, author, year } = req.body;
   try {
-    const result = await pool.query('INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING *', [title, author, year]);
+    const result = await pool.query(
+      'INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING *', 
+      [title, author, year]
+    );
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -44,7 +47,10 @@ app.put('/api/books/:id', async (req, res) => {
   const { id } = req.params;
   const { title, author, year } = req.body;
   try {
-    const result = await pool.query('UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4 RETURNING *', [title, author, year, id]);
+    const result = await pool.query(
+      'UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4 RETURNING *', 
+      [title, author, year, id]
+    );
     if (result.rows.length === 0) {
       return res.status(404).send('Libro no encontrado');
     }
@@ -70,15 +76,21 @@ app.delete('/api/books/:id', async (req, res) => {
   }
 });
 
-
-
+// Ruta raíz
 app.get('/', (req, res) => {
     res.send('Servidor funcionando');
 });
 
-// ✅ Agregamos una ruta para /api
+// Ruta API principal
 app.get('/api', (req, res) => {
     res.json({ message: 'API funcionando correctamente' });
 });
+
+// Iniciar el servidor (solo en desarrollo)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Servidor escuchando en http://localhost:${port}`);
+    });
+}
 
 module.exports = app;

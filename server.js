@@ -42,6 +42,16 @@ app.get('/api', (req, res) => {
 });
 
 // Endpoints CRUD para libros
+app.get('/api/books', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM books');
+    console.log("Query result:", result);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500).send('Error al obtener los libros');
+  }
+});
 
 // Crear un nuevo libro
 app.post('/api/books', async (req, res) => {

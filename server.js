@@ -8,7 +8,10 @@ const port = process.env.PORT || 3000;
 
 // Configura la conexión a CockroachDB
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Usa una variable de entorno en lugar de una conexión directa
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  } // Usa una variable de entorno en lugar de una conexión directa
 });
 
 // Middleware

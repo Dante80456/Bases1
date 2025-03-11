@@ -2,3 +2,4 @@
 /build
 .vercel
 /.gitignore
+/.env

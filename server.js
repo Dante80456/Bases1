@@ -19,6 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.get('/favicon.ico', (req, res) => res.status(204).end());
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Crear un nuevo libro

@@ -20,6 +20,9 @@ document.getElementById('addBookForm').addEventListener('submit', async (e) => {
     
     if (response.ok) {
         alert('✅ Libro agregado exitosamente');
+        document.getElementById('title').value = "";
+        document.getElementById('author').value = "";
+        document.getElementById('year').value = "";
         loadBooks();
     } else {
         alert('❌ Error al agregar el libro duplicado');
@@ -44,6 +47,10 @@ document.getElementById('updateBookForm').addEventListener('submit', async (e) =
 
     if (response.ok) {
         alert('Libro actualizado exitosamente');
+        document.getElementById('bookId').value = "";
+        document.getElementById('updateTitle').value = "";
+        document.getElementById('updateAuthor').value = "";
+        document.getElementById('updateYear').value = "";
         loadBooks();
     } else {
         alert('Error al actualizar el libro');

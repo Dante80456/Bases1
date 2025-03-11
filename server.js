@@ -10,8 +10,9 @@ const port = process.env.PORT || 3000;
 // Configuración de la conexión a CockroachDB
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: process.env.DATABASE_URL.includes("localhost") ? false : { rejectUnauthorized: false }
 });
+
 
 // Verificar conexión a la base de datos
 pool.connect()

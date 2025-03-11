@@ -10,10 +10,18 @@ const port = process.env.PORT || 3000;
 // Configuración de la conexión a CockroachDB
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: process.env.DATABASE_URL.includes("cockroachlabs") 
+    ? { sslmode: 'require' } 
+    : { rejectUnauthorized: false }
 });
+
+// Verificar conexión a la base de datos
+pool.connect()
+  .then(() => console.log('Conectado a CockroachDB'))
+  .catch(err => {
+    console.error('Error conectando a la base de datos:', err);
+    process.exit(1);
+  });
 
 // Middleware
 app.use(cors());
@@ -97,7 +105,7 @@ app.delete('/api/books/:id', async (req, res) => {
 
 // Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
+  console.log("Servidor escuchando en http://localhost:${port}");
 });
 
-module.exports = app;
+module.exports = app;

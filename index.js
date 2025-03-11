@@ -1,14 +1,4 @@
-const express = require('express');
-const app = express();
-const path = require('path'); // <--- Agregar esto si falta
+const app = require('./server');
 
-app.use(express.static(path.join(__dirname, 'public')));
+module.exports = app;
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});

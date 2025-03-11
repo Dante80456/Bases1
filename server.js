@@ -7,31 +7,40 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configura la conexión a CockroachDB
+// Configuración de la conexión a CockroachDB
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
-  } // Usa una variable de entorno en lugar de una conexión directa
+  },
 });
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Evita errores con favicon
 app.get('/favicon.ico', (req, res) => res.status(204).end());
+
+// Ruta principal para servir el index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Ruta API principal
+app.get('/api', (req, res) => {
+  res.json({ message: 'API funcionando correctamente' });
+});
 
+// Endpoints CRUD para libros
 
 // Crear un nuevo libro
 app.post('/api/books', async (req, res) => {
   const { title, author, year } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING *', 
+      'INSERT INTO books (title, author, year) VALUES ($1, $2, $3) RETURNING *',
       [title, author, year]
     );
     res.status(201).json(result.rows[0]);
@@ -58,7 +67,7 @@ app.put('/api/books/:id', async (req, res) => {
   const { title, author, year } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4 RETURNING *', 
+      'UPDATE books SET title = $1, author = $2, year = $3 WHERE id = $4 RETURNING *',
       [title, author, year, id]
     );
     if (result.rows.length === 0) {
@@ -86,21 +95,9 @@ app.delete('/api/books/:id', async (req, res) => {
   }
 });
 
-// Ruta raíz
-app.get('/', (req, res) => {
-    res.send('Servidor funcionando');
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
-
-// Ruta API principal
-app.get('/api', (req, res) => {
-    res.json({ message: 'API funcionando correctamente' });
-});
-
-// Iniciar el servidor (solo en desarrollo)
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(port, () => {
-        console.log(`Servidor escuchando en http://localhost:${port}`);
-    });
-}
 
 module.exports = app;
